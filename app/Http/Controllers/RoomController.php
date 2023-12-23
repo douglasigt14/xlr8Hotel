@@ -22,7 +22,8 @@ class RoomController extends Controller
 
     public function show($id)
     {
-        return Room::findOrFail($id);
+        $room = Room::find($id) ?? [];
+        return $room;
     }
 
     public function update(Request $request, $id)

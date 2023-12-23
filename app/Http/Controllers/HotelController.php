@@ -2,37 +2,38 @@
 
 namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
-use App\Models\Room;
+use App\Models\Hotel;
 use Illuminate\Http\Request;
 
-class RoomController extends Controller
+class HotelController extends Controller
 {
     public function index()
     {
-        return Room::all();
-    }
-
-    public function show(Room $room)
-    {
-        return $room;
+        return Hotel::all();
     }
 
     public function store(Request $request)
     {
-        return Room::create($request->all());
+        return Hotel::create($request->all());
     }
 
-    public function update(Request $request, Room $room)
+    public function show($id)
     {
-        $room->update($request->all());
-        return $room;
+        $hotel = Hotel::find($id) ?? [];
+        return $hotel;
     }
 
-    public function destroy(Room $room)
+    public function update(Request $request, $id)
     {
-        $room->delete();
-        return response()->json(['message' => 'Room deleted successfully']);
+        $hotel = Hotel::findOrFail($id);
+        $hotel->update($request->all());
+        return $hotel;
+    }
+
+    public function destroy($id)
+    {
+        $hotel = Hotel::findOrFail($id);
+        $hotel->delete();
+        return response()->json(['message' => 'Hotel deleted successfully']);
     }
 }

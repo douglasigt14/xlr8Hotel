@@ -19,7 +19,8 @@ class PriceController extends Controller
 
     public function show($id)
     {
-        return Price::findOrFail($id);
+        $price = Price::find($id) ?? [];
+        return $price;
     }
 
     public function update(Request $request, $id)
