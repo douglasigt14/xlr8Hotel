@@ -14,7 +14,8 @@ class PriceController extends Controller
 
     public function store(Request $request)
     {
-        return Price::create($request->all());
+        Price::create($request->all());
+        return response()->json(['msg' => 'Criado com sucesso']);
     }
 
     public function show($id)
@@ -27,13 +28,13 @@ class PriceController extends Controller
     {
         $price = Price::findOrFail($id);
         $price->update($request->all());
-        return $price;
+        return response()->json(['msg' => 'Preço editado']);
     }
 
     public function destroy($id)
     {
         $price = Price::findOrFail($id);
         $price->delete();
-        return response()->json(['message' => 'Price deleted successfully']);
+        return response()->json(['msg' => 'Preço deletado']);
     }
 }

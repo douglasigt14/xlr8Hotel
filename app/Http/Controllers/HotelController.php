@@ -15,7 +15,7 @@ class HotelController extends Controller
     public function store(Request $request)
     {
         Hotel::create($request->all());
-        return response()->json(['msg' => 'Hotel criado com sucesso']);
+        return response()->json(['msg' => 'Criado com sucesso']);
     }
 
     public function show($id)
