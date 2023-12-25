@@ -9,7 +9,7 @@ class HotelController extends Controller
 {
     public function index()
     {
-        return Hotel::select("name","location", "image_url")->get();
+        return Hotel::select("id","name","location", "image_url")->get();
     }
 
     public function store(Request $request)
