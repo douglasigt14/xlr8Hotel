@@ -18,7 +18,7 @@ class RoomController extends Controller
         $result = [];
         foreach ($hotels as $hotel) {
             $result[] = [
-                "hotel" => $hotel->name,
+                "name" => $hotel->name,
                 "rooms" => Room::select("id", "room_type", "number_of_rooms")->get()
             ];
         }
@@ -49,6 +49,6 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
         $room->delete();
-        return response()->json(['msg' => $room->room_type.'deletado']);
+        return response()->json(['msg' => $room->room_type.' deletado']);
     }
 }
