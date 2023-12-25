@@ -28,13 +28,13 @@ class HotelController extends Controller
     {
         $hotel = Hotel::findOrFail($id);
         $hotel->update($request->all());
-        return $hotel;
+        return response()->json(['msg' => $hotel->name.' editado']);
     }
 
     public function destroy($id)
     {
         $hotel = Hotel::findOrFail($id);
         $hotel->delete();
-        return response()->json(['msg' => 'Hotel deletado']);
+        return response()->json(['msg' => $hotel->name.'deletado']);
     }
 }
