@@ -9,12 +9,13 @@ class HotelController extends Controller
 {
     public function index()
     {
-        return Hotel::all();
+        return Hotel::select("name","location", "image_url")->get();
     }
 
     public function store(Request $request)
     {
-        return Hotel::create($request->all());
+        Hotel::create($request->all());
+        return response()->json(['msg' => 'Hotel criado com sucesso']);
     }
 
     public function show($id)
@@ -34,6 +35,6 @@ class HotelController extends Controller
     {
         $hotel = Hotel::findOrFail($id);
         $hotel->delete();
-        return response()->json(['message' => 'Hotel deleted successfully']);
+        return response()->json(['msg' => 'Hotel deletado']);
     }
 }
