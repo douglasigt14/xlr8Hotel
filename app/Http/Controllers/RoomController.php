@@ -19,6 +19,7 @@ class RoomController extends Controller
         foreach ($hotels as $hotel) {
             $result[] = [
                 "name" => $hotel->name,
+                "hotel_id" => $hotel->id,
                 "rooms" => Room::select("id", "room_type", "number_of_rooms")->get()
             ];
         }
