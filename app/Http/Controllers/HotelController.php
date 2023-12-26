@@ -16,19 +16,23 @@ class HotelController extends Controller
 
     public function store(Request $request)
     {
-         // Validação do arquivo
-            $request->validate([
-                'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-            $image = $request->file('image_url');
 
-            $imageName = time() . '_' . $image->getClientOriginalName();
 
-            $image->move(public_path('images'), $imageName);
             $hotel = new Hotel;
+
+            if ($request->hasFile('image_url')) {
+                $image = $request->file('image_url');
+
+                $imageName = time() . '_' . $image->getClientOriginalName();
+
+                $image->move(public_path('images'), $imageName);
+                $hotel->image_url = 'images/' . $imageName; 
+            }
+
+           
             $hotel->name = $request->input('name');
             $hotel->location = $request->input('location');
-            $hotel->image_url = 'images/' . $imageName; 
+           
             $hotel->save();
 
             return response()->json(['msg' => 'Criado com sucesso']);
@@ -36,13 +40,10 @@ class HotelController extends Controller
 
     public function update(Request $request, $id)
     {
-         // Encontre o hotel pelo ID
-        $hotel = Hotel::findOrFail($id);
-        if ($request->hasFile('image_url')) {
-            $request->validate([
-                'image_url' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
 
+        
+        $hotel = Hotel::select("id","name","location", "image_url")->where('id', $id)->first();
+        if ($request->hasFile('image_url')) {
             $image = $request->file('image_url');
 
             $imageName = time() . '_' . $image->getClientOriginalName();
@@ -50,12 +51,11 @@ class HotelController extends Controller
             $image->move(public_path('images'), $imageName);
             $hotel->image_url = 'images/' . $imageName;
         }
-
-        $hotel->name = $request->input('name', $hotel->name);
-        $hotel->location = $request->input('location', $hotel->location);
+        $hotel->name = $request->input('name');
+        $hotel->location = $request->input('location');
         $hotel->save();
 
-        return response()->json(['msg' => $hotel->name.' editado']);
+        return response()->json(['msg' => 'Editado com sucesso']);
     }
 
     public function destroy($id)
