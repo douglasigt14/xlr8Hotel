@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 
 namespace App\Http\Controllers;
 
-use App\Models\Hotel;
 use App\Models\Room;
-use App\Models\Price;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
+    public function index()
+    {
+        return Room::all();
+    }
     public function store(Request $request)
     {
         Room::create($request->all());

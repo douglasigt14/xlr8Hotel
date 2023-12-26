@@ -40,22 +40,26 @@ class HotelController extends Controller
 
     public function update(Request $request, $id)
     {
+        $payload = $request->all();
 
-        
         $hotel = Hotel::select("id","name","location", "image_url")->where('id', $id)->first();
-        if ($request->hasFile('image_url')) {
-            $image = $request->file('image_url');
-
-            $imageName = time() . '_' . $image->getClientOriginalName();
-
-            $image->move(public_path('images'), $imageName);
-            $hotel->image_url = 'images/' . $imageName;
+        if($hotel){
+            if ($request->hasFile('image_url')) {
+                $image = $request->file('image_url');
+    
+                $imageName = time() . '_' . $image->getClientOriginalName();
+    
+                $image->move(public_path('images'), $imageName);
+                $hotel->image_url = 'images/' . $imageName;
+            }
+            $hotel->name = $payload["name"];
+            $hotel->location = $payload["location"];
+            $hotel->save();
+    
+            return response()->json(['msg' => $hotel->name.' editado']);
         }
-        $hotel->name = $request->input('name');
-        $hotel->location = $request->input('location');
-        $hotel->save();
-
-        return response()->json(['msg' => 'Editado com sucesso']);
+        return response()->json(['msg' => 'Hotel not found']);
+       
     }
 
     public function destroy($id)
