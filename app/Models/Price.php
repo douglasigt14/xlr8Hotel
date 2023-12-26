@@ -16,10 +16,5 @@ class Price extends Model
     {
         return $this->belongsTo(Room::class);
     }
-
-    public function getStayDateAttribute($value)
-    {
-        return Carbon::parse($value)->format('d/m/Y');
-    }
 }
 

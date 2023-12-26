@@ -16,7 +16,7 @@ class CreatePricesTable extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('room_id')->constrained(); 
+            $table->foreignId('room_id')->constrained()->onDelete('cascade'); 
             $table->date('stay_date');
             $table->decimal('price', 8, 2); 
             $table->timestamps();
