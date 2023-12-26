@@ -16,31 +16,37 @@ class HotelController extends Controller
 
     public function store(Request $request)
     {
+         // Validação do arquivo
             $request->validate([
                 'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
             $image = $request->file('image_url');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('images'), $imageName);
 
+            $imageName = time() . '_' . $image->getClientOriginalName();
+
+            $image->move(public_path('images'), $imageName);
             $hotel = new Hotel;
             $hotel->name = $request->input('name');
             $hotel->location = $request->input('location');
-            $hotel->image_url = 'images/' . $imageName;
+            $hotel->image_url = 'images/' . $imageName; 
+            $hotel->save();
 
             return response()->json(['msg' => 'Criado com sucesso']);
     }
 
     public function update(Request $request, $id)
     {
+         // Encontre o hotel pelo ID
         $hotel = Hotel::findOrFail($id);
-
         if ($request->hasFile('image_url')) {
             $request->validate([
                 'image_url' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+
             $image = $request->file('image_url');
+
             $imageName = time() . '_' . $image->getClientOriginalName();
+
             $image->move(public_path('images'), $imageName);
             $hotel->image_url = 'images/' . $imageName;
         }
