@@ -42,7 +42,7 @@ class HotelController extends Controller
         foreach ($hotels as $hotel) {
             $rooms = Room::select("id", "room_type", "number_of_rooms")->where('hotel_id', $hotel->id)->get();
             foreach ($rooms as $room) {
-                $room->prices =  Price::select("id", "room_id", "stay_date","price")->where('room_id', $room->id)->get();
+                $room->prices =  Price::select("id", "stay_date","price")->where('room_id', $room->id)->get();
             }
             $hotel->rooms  = $rooms->toArray();
         }
@@ -58,7 +58,7 @@ class HotelController extends Controller
         foreach ($hotels as $hotel) {
             $rooms = Room::select("id", "room_type", "number_of_rooms")->where('hotel_id', $hotel->id)->get();
             foreach ($rooms as $room) {
-                $room->prices =  Price::select("id", "room_id", "stay_date","price")->where('room_id', $room->id)->get();
+                $room->prices =  Price::select("id", "stay_date","price")->where('room_id', $room->id)->get();
             }
             $hotel->rooms  = $rooms->toArray();
         }
