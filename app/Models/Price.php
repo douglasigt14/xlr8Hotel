@@ -9,7 +9,7 @@ class Price extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['stay_date', 'price'];
+    protected $fillable = ['room_id','stay_date', 'price'];
 
     public function room()
     {

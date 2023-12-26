@@ -22,16 +22,17 @@ Route::get('/', function (Request $request) {
 });
 
 Route::prefix('hotels')->group(function () {
-    Route::get('/{id}', [HotelController::class, 'show']);
     Route::get('/', [HotelController::class, 'index']);
     Route::post('/', [HotelController::class, 'store']);
     Route::put('/{id}', [HotelController::class, 'update']);
     Route::delete('/{id}', [HotelController::class, 'destroy']);
+    Route::get('/details/{id}', [HotelController::class, 'detailsForId']);
+    Route::get('/details', [HotelController::class, 'detailsAll']);
+    
 });
 
 Route::prefix('rooms')->group(function () {
     Route::get('/{id}', [RoomController::class, 'show']);
-    Route::get('/', [RoomController::class, 'index']);
     Route::post('/', [RoomController::class, 'store']);
     Route::put('/{id}', [RoomController::class, 'update']);
     Route::delete('/{id}', [RoomController::class, 'destroy']);

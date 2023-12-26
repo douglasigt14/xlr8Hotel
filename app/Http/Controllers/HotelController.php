@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Price;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class HotelController extends Controller
@@ -18,12 +20,6 @@ class HotelController extends Controller
         return response()->json(['msg' => 'Criado com sucesso']);
     }
 
-    public function show($id)
-    {
-        $hotel = Hotel::find($id) ?? [];
-        return $hotel;
-    }
-
     public function update(Request $request, $id)
     {
         $hotel = Hotel::findOrFail($id);
@@ -36,5 +32,47 @@ class HotelController extends Controller
         $hotel = Hotel::findOrFail($id);
         $hotel->delete();
         return response()->json(['msg' => $hotel->name.' deletado']);
+    }
+
+    public function detailsAll()
+    {
+        $hotels = Hotel::select("id", "name", "location", "image_url")->get();
+
+        $result = [];
+        
+        foreach ($hotels as $hotel) {
+            $rooms = Room::select("id", "room_type", "number_of_rooms")->where('hotel_id', $hotel->id)->get();
+            foreach ($rooms as $room) {
+                $room->prices =  Price::select("id", "room_id", "stay_date","price")->where('room_id', $room->id)->get();
+            }
+            $result[] = [
+                "name" => $hotel->name,
+                "hotel_id" => $hotel->id,
+                "rooms" =>  $rooms->toArray()
+            ];
+        }
+
+        return $result;
+    }
+
+    public function detailsForId($hotalId)
+    {
+        $hotels = Hotel::select("id", "name", "location", "image_url")->where('id',$hotalId)->get();
+
+        $result = [];
+        
+        foreach ($hotels as $hotel) {
+            $rooms = Room::select("id", "room_type", "number_of_rooms")->where('hotel_id', $hotel->id)->get();
+            foreach ($rooms as $room) {
+                $room->prices =  Price::select("id", "room_id", "stay_date","price")->where('room_id', $room->id)->get();
+            }
+            $result[] = [
+                "name" => $hotel->name,
+                "hotel_id" => $hotel->id,
+                "rooms" =>  $rooms->toArray()
+            ];
+        }
+
+        return $result;
     }
 }
