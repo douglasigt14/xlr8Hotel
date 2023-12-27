@@ -38,10 +38,8 @@ class HotelController extends Controller
             return response()->json(['msg' => 'Criado com sucesso']);
     }
 
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        $payload = $request->all();
-
         $hotel = Hotel::select("id","name","location", "image_url")->where('id', $id)->first();
         if($hotel){
             if ($request->hasFile('image_url')) {
@@ -52,9 +50,9 @@ class HotelController extends Controller
                 $image->move(public_path('images'), $imageName);
                 $hotel->image_url = 'images/' . $imageName;
             }
-            $hotel->name = $payload["name"];
-            $hotel->location = $payload["location"];
-            $hotel->save();
+              $hotel->location = $request->input('location');
+              $hotel->name = $request->input('name');
+              $hotel->save();
     
             return response()->json(['msg' => $hotel->name.' editado']);
         }
