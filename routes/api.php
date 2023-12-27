@@ -28,6 +28,7 @@ Route::prefix('hotels')->group(function () {
     Route::delete('/{id}', [HotelController::class, 'destroy']);
     Route::get('/details/{id}', [HotelController::class, 'detailsForId']);
     Route::get('/details', [HotelController::class, 'detailsAll']);
+    Route::post('/search', [HotelController::class, 'search']);
     
 });
 
